@@ -15,10 +15,10 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - sample.modesoventures.com
-    secretName: sample-modesoventures-com-tls  
+    - Your-Domain.com
+    secretName: your-domain-tls  
   rules:
-  - host: "sample.modesoventures.com"
+  - host: "your-Domain.com"
     http:
       paths:
       - path: /
