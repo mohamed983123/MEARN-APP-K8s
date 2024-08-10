@@ -16,13 +16,13 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: sample-modesoventures-com
+  name: your-domain-com
   namespace: default
 spec:
-  secretName: sample-modesoventures-com-tls
+  secretName: your-domain-com-tls
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: sample.modesoventures.com
+  commonName: your-domain.com
   dnsNames:
-  - sample.modesoventures.com
+  - your-domain.com
