@@ -1,0 +1,44 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sample-ingress
+  namespace: default
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/use-regex: "true" # If you want to use regular expressions in paths
+    nginx.ingress.kubernetes.io/add-base-url: "true" # If you need to add a base URL
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP" # Protocol to communicate with the backend services
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - sample.modesoventures.com
+    secretName: sample-modesoventures-com-tls  
+  rules:
+  - host: "sample.modesoventures.com"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 80
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: backend
+            port:
+              number: 3000             
+      - path: /api/employees
+        pathType: Exact
+        backend:
+          service:
+            name: backend
+            port:
+              number: 3000

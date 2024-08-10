@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo
+  labels:
+    app: mongo
+spec:
+  selector:
+    matchLabels:
+      app: mongo
+  serviceName: "mongo"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mongo
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "27017"
+        prometheus.io/path: "/metrics"
+    spec:
+      {{- if .Values.securityContext.mongo }}
+      securityContext:
+        runAsUser: {{ .Values.securityContext.mongo.runAsUser }}
+        runAsGroup: {{ .Values.securityContext.mongo.runAsGroup }}
+        fsGroup: {{ .Values.securityContext.mongo.fsGroup }}
+      {{- end }}  
+      containers:
+        - name: mongo
+          image: mongo:4.2
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongo-data
+              mountPath: /data/db
+  volumeClaimTemplates:
+    - metadata:
+        name: mongo-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-0
+spec:
+  ports:
+    - port: 27017
+      name: mongo
+  selector:
+    app: mongo
+
