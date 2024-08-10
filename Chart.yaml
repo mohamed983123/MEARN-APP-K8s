@@ -1,0 +1,7 @@
+apiVersion: v2
+name: my-app
+description: A Helm chart for deploying a frontend, backend, and MongoDB with scalability and observability
+type: application
+version: 0.1.0
+appVersion: "1.0"
+

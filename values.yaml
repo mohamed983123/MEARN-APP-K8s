@@ -1,0 +1,44 @@
+replicaCount: 1
+
+image:
+  repository: mohamed123983
+  frontendTag: latest
+  backendTag: 3
+
+service:
+  frontend:
+    type: NodePort
+    nodePort: 30080
+  backend:
+    type: NodePort
+    nodePort: 30081
+  mongo:
+    type: ClusterIP
+
+resources: {}
+
+autoscaling:
+  frontend:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 50
+  backend:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 50
+securityContext:
+  frontend:
+    runAsUser: 1000
+    runAsGroup: 1000
+    fsGroup: 1000
+  backend:
+    runAsUser: 1000
+    runAsGroup: 1000
+    fsGroup: 1000
+  mongo:
+    runAsUser: 1000
+    runAsGroup: 1000
+    fsGroup: 1000
+ 
